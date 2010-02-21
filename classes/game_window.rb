@@ -3,7 +3,7 @@ class GameWindow < Gosu::Window
   attr_accessor :images
   
   def initialize
-    super 640, 480, false
+    super 640, 480, true
     self.caption = "My super exciting new game. Whatever. No big deal."
     
     setup_resources
@@ -34,12 +34,14 @@ class GameWindow < Gosu::Window
     
     @player = Player.new(self, :model => :moustache_man, :x => 1, :y => 1, :z => 1, :move_speed => 2)
     @npcs = []
-    100.times {|i| @npcs << NPC.new(self, :model => [:scientist, :king, :queen, :blue_dress, :funky_cape][rand(5)], :x => rand(800), :y => rand(600), :z => 1, :move_speed => 1)}
+    20.times {|i| @npcs << NPC.new(self, :model => [:scientist, :king, :queen, :blue_dress, :funky_cape][rand(5)], :x => rand(640), :y => rand(480), :z => 1, :move_speed => 1)}
     @npcs.each {|npc| npc.type = :random_walk}
   end
   
   def update
-    if button_down? Gosu::Button::KbRight
+    if button_down? Gosu::Button::KbEscape
+      exit
+    elsif button_down? Gosu::Button::KbRight
       @player.move :right
     elsif button_down? Gosu::Button::KbDown
       @player.move :down
@@ -53,11 +55,11 @@ class GameWindow < Gosu::Window
     end
   end
   
-  def button_up(key)
-    if [Gosu::Button::KbRight, Gosu::Button::KbDown, Gosu::Button::KbLeft, Gosu::Button::KbUp].include?(key)
-      @player.stop_moving
-    end
-  end
+  #def button_up(key)
+  #  if [Gosu::Button::KbRight, Gosu::Button::KbDown, Gosu::Button::KbLeft, Gosu::Button::KbUp].include?(key)
+  #    @player.stop_moving
+  #  end
+  #end
   
   def draw
     @map.draw
